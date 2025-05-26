@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:login_screen_v3/entieties/users.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +24,38 @@ class _LoginScreenState extends State<LoginScreen> {
       visible = !visible;
     });
   }
-
+List<Users> listaUsuarios = [
+    Users(
+      email: 'martinkin2021@gmail.com',
+      contrasena: 'NuevaContraseña2021',
+      nombre: 'Tincho',
+      direccion: 'Nazca 1830',
+    ),
+    Users(
+      email: 'martinkin2020@gmail.com',
+      contrasena: 'Pandemia2020',
+      nombre: 'Marto',
+      direccion: 'Jonte 1234',
+    ),
+    Users(
+      email: '48522161@est.ort.edu.ar',
+      contrasena: 'MecatronicaDap123',
+      nombre: 'Martin',
+      direccion: 'Yatay 123',
+    ),
+    Users(
+      email: '23903423@est.ort.edu.ar',
+      contrasena: 'Marcelito22',
+      nombre: 'Marcelo',
+      direccion: 'Rio de Janerio 321',
+    ),
+    Users(
+      email: 'violeminecraft@gmail.com',
+      contrasena: 'Minecraft123',
+      nombre: 'Violeta',
+      direccion: 'Angel gallardo 2000',
+    ),
+  ];
   void mostrarSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       content: Text(message, style: TextStyle(color: Color.fromARGB(255, R, G, B)),),
