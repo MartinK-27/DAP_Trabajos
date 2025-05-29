@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:login_screen_v3/entieties/users.dart';
 
 class HomeScreen extends StatelessWidget {
   
-  final String textoingresado1;
+  final Users usuarioingresando;
 
-  const HomeScreen({super.key, required this.textoingresado1});
+  const HomeScreen({super.key, required this.usuarioingresando});
 
 
   @override
@@ -17,10 +18,15 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Welcome to the Home Screen $textoingresado1',
+            Text('Bienvendio ${usuarioingresando.nombre}',
                 style: TextStyle(
                   fontSize: 24,
-                  color: Color.fromARGB(255, 71, 238, 20),
+                  color: Color.fromARGB(255, 0, 0, 0),
+                )),
+                Text('Vivis en ${usuarioingresando.direccion}',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 )),
             
             

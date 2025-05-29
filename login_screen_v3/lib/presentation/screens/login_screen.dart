@@ -50,9 +50,9 @@ List<Users> listaUsuarios = [
       direccion: 'Rio de Janerio 321',
     ),
     Users(
-      email: 'violeminecraft@gmail.com',
+      email: 'fofo_god@gmail.com',
       contrasena: 'Minecraft123',
-      nombre: 'Violeta',
+      nombre: 'Fefe',
       direccion: 'Angel gallardo 2000',
     ),
   ];
@@ -123,18 +123,14 @@ List<Users> listaUsuarios = [
                       setState(() {});
                     } 
                     else {
-                      if (textoingresado1 == 'MartinK_27') {
-                        if (textoingresado2 == 'MecatronicaDap123') {
-                          R = 0;
-                          G = 255;
-                          B = 0;
-                          mostrarSnackBar(context, 'Incio de sesion exitoso');
-                          context.go('/home', extra: textoingresado1);
-                          setState(() {});
-                        } else {
-                          mostrarSnackBar(context, 'Error, Usuario o Contraseña invalidos');
-                          setState(() {});
-                        }
+                     var usuarioingresando = listaUsuarios.firstWhere((Users) => Users.email == textoingresado1);
+                      if (usuarioingresando.contrasena == textoingresado2) {
+                        R = 0;
+                        G = 255;
+                        B = 0;
+                        mostrarSnackBar(context, 'Incio de sesion exitoso');
+                        context.go('/home', extra: usuarioingresando);
+                        setState(() {});
                       } else {
                         R = 255;
                         G = 0;
