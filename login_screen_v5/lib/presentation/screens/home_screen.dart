@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:login_screen_v3/entieties/users.dart';
-import 'package:login_screen_v3/entieties/balatro_cards.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:login_screen_v5/entieties/users.dart';
+import 'package:go_router/go_router.dart';
+import 'package:login_screen_v5/presentation/providers.dart';
 
-class HomeScreen extends StatelessWidget {
-  final Users persona;
-  final cards = balatroList;
+class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key, required this.usuarioingresando});
 
-  HomeScreen({super.key, required this.persona});
+  final Users usuarioingresando;
+  
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context ,ref) {
+
+    var cards = ref.watch(cardProvider);
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Bienvenido ${persona.nombre} ${persona.direccion}',
+          'Bienvenido ${usuarioingresando.nombre} ${usuarioingresando.direccion}',
         ),
       ),
       body: ListView.builder(
@@ -71,10 +77,18 @@ class HomeScreen extends StatelessWidget {
                 height: 100,
                 fit: BoxFit.cover,
               ),
+              onTap: () {
+                context.push(
+                  '/CardDetail',
+                  extra: cards[index],
+                );
+              },
             ),
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/AddCard'), child: Icon(Icons.add), )
     );
   }
 }

@@ -1,6 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:login_screen_v3/entieties/users.dart';
+import 'package:login_screen_v5/entieties/users.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -52,7 +54,7 @@ final listaUsuarios = listUsers;
               ),
 
               Padding(
-                padding: EdgeInsets.all(50),
+                padding: EdgeInsets.all(20),
                 child: TextField(
                   controller: usuario,
                   decoration: InputDecoration(
@@ -63,7 +65,7 @@ final listaUsuarios = listUsers;
               ),
 
               Padding(
-                padding: EdgeInsets.all(50),
+                padding: EdgeInsets.all(20),
                 child: TextField(
                   controller: password,
                   obscureText: visible,
@@ -99,7 +101,7 @@ final listaUsuarios = listUsers;
                         G = 255;
                         B = 0;
                         mostrarSnackBar(context, 'Incio de sesion exitoso');
-                        context.go('/home', extra: listaUsuarios.firstWhere((Users) => Users.email == textoingresado1));
+                        context.go('/home', extra: usuarioingresando);
                         setState(() {});
                       } else {
                         R = 255;
