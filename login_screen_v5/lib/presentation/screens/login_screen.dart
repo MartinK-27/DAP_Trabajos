@@ -1,17 +1,19 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login_screen_v5/entieties/users.dart';
+import 'package:login_screen_v5/presentation/providers.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends ConsumerState<LoginScreen> {
   TextEditingController usuario = TextEditingController();
   TextEditingController password = TextEditingController();
   String texto = 'Ingrese el usuraio y contraseña';
@@ -40,6 +42,7 @@ final listaUsuarios = listUsers;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: Center(
           child: Column(
@@ -95,15 +98,17 @@ final listaUsuarios = listUsers;
                       setState(() {});
                     } 
                     else {
-                     var usuarioingresando = listaUsuarios.firstWhere((Users) => Users.email == textoingresado1);
-                      if (usuarioingresando.contrasena == textoingresado2) {
+                     var usuarioingresando = listaUsuarios.firstWhere((Users) => Users.email == textoingresado1, orElse: () => Users(email: 'null', contrasena: 'null', nombre: 'null', direccion: 'null', id: 'null'));
+                      if (usuarioingresando.contrasena == textoingresado2 && usuarioingresando.email == textoingresado1) {
                         R = 0;
                         G = 255;
                         B = 0;
                         mostrarSnackBar(context, 'Incio de sesion exitoso');
-                        context.go('/home', extra: usuarioingresando);
+                        ref.read(userIDProvider.notifier).update((State) => usuarioingresando.id);
+                        context.go('/home');
                         setState(() {});
-                      } else {
+                      } 
+                      else {
                         R = 255;
                         G = 0;
                         B = 0;

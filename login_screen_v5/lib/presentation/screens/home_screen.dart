@@ -4,19 +4,31 @@ import 'package:login_screen_v5/entieties/users.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login_screen_v5/presentation/providers.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key, required this.usuarioingresando});
-
-  final Users usuarioingresando;
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
   
+@override
+  ConsumerState<HomeScreen> createState() => HomeScreenState();
+}
 
+class HomeScreenState extends ConsumerState<HomeScreen> {
+  
+  bool modoBorrado = false;
+  bool modoEditar = false;
+  
   @override
-  Widget build(BuildContext context ,ref) {
+  Widget build(BuildContext context) {
 
-    var cards = ref.watch(cardProvider);
+    final cards = ref.watch(cardProvider);
+    final userID = ref.watch(userIDProvider);
+    final usuarioingresando = listUsers.firstWhere(
+      (user) => user.id == userID,
+      orElse: () => Users(email: '', contrasena: '', nombre: '', direccion: '', id: ''),
+    );
 
 
     return Scaffold(
+      backgroundColor: modoBorrado ? const Color.fromARGB(255, 197, 20, 46) : modoEditar ? const Color.fromARGB(255, 236, 240, 24) : Colors.white,
       appBar: AppBar(
         title: Text(
           'Bienvenido ${usuarioingresando.nombre} ${usuarioingresando.direccion}',
@@ -78,17 +90,63 @@ class HomeScreen extends ConsumerWidget {
                 fit: BoxFit.cover,
               ),
               onTap: () {
-                context.push(
-                  '/CardDetail',
-                  extra: cards[index],
-                );
+                if (modoBorrado) {
+                  // Eliminar la carta
+                  ref.read(cardProvider.notifier).state = [
+                    for (final card in cards)
+                      if (card.id != cards[index].id) card
+                  ];
+                } else if (modoEditar == true) {
+                ref.read(cardIDProvider.notifier).state = cards[index].id;
+                context.push('/EditCard');
+                }
+                else {
+                ref.read(cardIDProvider.notifier).state = cards[index].id;
+                context.push('/CardDetail');
+              }
               },
             ),
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/AddCard'), child: Icon(Icons.add), )
+      floatingActionButton: Column(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    FloatingActionButton(
+      
+      onPressed: () {
+        context.push(
+          '/AddCard',
+        );
+      },
+      backgroundColor: const Color.fromARGB(255, 18, 127, 216),
+      child: Icon(Icons.add),
+    ),
+      
+    SizedBox(height: 10),
+    FloatingActionButton(
+      
+      onPressed: () {
+        setState(() {
+          modoEditar = !modoEditar;
+        });
+      },
+      backgroundColor: const Color.fromARGB(255, 193, 196, 27),
+      child: Icon(modoEditar ? Icons.edit_off : Icons.edit),
+    ),
+    SizedBox(height: 10),
+    FloatingActionButton(
+      
+      onPressed: () {
+        setState(() {
+            modoBorrado = !modoBorrado;
+          });
+      },
+      backgroundColor: Colors.red,
+      child: Icon(modoBorrado ? Icons.cancel : Icons.delete),
+    ),
+  ],
+),
     );
   }
 }

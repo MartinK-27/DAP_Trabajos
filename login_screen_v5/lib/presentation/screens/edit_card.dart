@@ -4,22 +4,36 @@ import 'package:go_router/go_router.dart';
 import 'package:login_screen_v5/presentation/providers.dart';
 import 'package:login_screen_v5/entieties/balatro_cards.dart';
 
-class AddCard extends ConsumerWidget {
-  const AddCard({super.key});
+class EditCard extends ConsumerWidget {
+  const EditCard({super.key});
+
+
 
   @override
   Widget build(BuildContext context, ref) {
+    final cardSelected = ref.watch(cardIDProvider);
+    final card = ref.watch(cardProvider).firstWhere(
+          (card) => card.id == cardSelected,
+          orElse: () => Balatro(
+            name: '',
+            image: '',
+            description: '',
+            price: 0,
+            rarity: '',
+            id: 0,
+          ),
+        );
 
-TextEditingController name = TextEditingController();
-TextEditingController image = TextEditingController();
-TextEditingController description = TextEditingController();
-TextEditingController price = TextEditingController();
-TextEditingController rarity = TextEditingController();
-TextEditingController id = TextEditingController();
+TextEditingController name = TextEditingController(text: card.name);
+TextEditingController image = TextEditingController(text: card.image);
+TextEditingController description = TextEditingController(text: card.description);  
+TextEditingController price = TextEditingController(text: card.price.toString());
+TextEditingController rarity = TextEditingController(text: card.rarity);
+TextEditingController id = TextEditingController(text: card.id.toString());
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Card'),
+        title: const Text('Edit Card'),
       ),
       body: Center(
         child: Padding(
@@ -96,22 +110,25 @@ TextEditingController id = TextEditingController();
                       SnackBar(content: Text('Please fill in all fields')),
                     );
                   } else {
-                    ref.read(cardProvider.notifier).update((state) => [
-                      ...state,
-                      Balatro(
-                        name: name.text,
-                        image: image.text.isEmpty ? 'https://i.ytimg.com/vi/7OzUJX0yjaM/hqdefault.jpg' : image.text,
-                        description: description.text,
-                        price: int.parse(price.text),
-                        rarity: rarity.text,
-                        id: int.parse(id.text),
-                      ),
-                    ]);
+                    ref.read(cardProvider.notifier).state = [
+                      for (final card in ref.read(cardProvider))
+                        if (card.id == cardSelected)
+                          Balatro(
+                            name: name.text,
+                            image: image.text,
+                            description: description.text,
+                            price: int.parse(price.text),
+                            rarity: rarity.text,
+                            id: int.parse(id.text),
+                          )
+                        else
+                          card
+                    ];
                     context.go('/home');
                   }
                   
                 },
-                child: Text('Add Card'),
+                child: Text('Confirm Edit'),
               ),
             ],
           ),

@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login_screen_v5/entieties/balatro_cards.dart';
+import 'package:login_screen_v5/presentation/providers.dart';
 
-class CardDetail extends StatelessWidget {
-  final Balatro card;
+class CardDetail extends ConsumerWidget {
 
-  const CardDetail({super.key, required this.card});
+  const CardDetail({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    
+    final cardID = ref.watch(cardIDProvider);
+    final cards = ref.watch(cardProvider);
+    final card = cards.firstWhere(
+      (cards) => cards.id == cardID,
+      orElse: () => Balatro(name: '', image: '', description: '', price: 0, rarity: '', id: 0),
+    );
     
     return Scaffold(
       appBar: AppBar(
